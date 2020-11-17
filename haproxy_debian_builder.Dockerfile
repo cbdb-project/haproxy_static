@@ -1,4 +1,4 @@
-FROM quay.io/icecodenew/builder_image_x86_64-linux:ubuntu AS step1_lua54
+FROM quay.io/oopus/builder_image_x86_64-linux:ubuntu AS step1_lua54
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ## curl -sSL "https://www.lua.org/download.html" | tr -d '\r\n\t' | grep -Po '(?<=lua-)[0-9]\.[0-9]\.[0-9](?=\.tar\.gz)' | sort -Vr | head -n 1
 ARG lua_version=5.4.0
@@ -55,7 +55,7 @@ RUN source '/root/.bashrc' \
     && /usr/local/sbin/haproxy -vvv \
     && sed -E 's/@SBINDIR@/\/usr\/local\/sbin/g' 'admin/systemd/haproxy.service.in' > "/build_root/haproxy-${haproxy_branch}/haproxy.service"
 
-FROM quay.io/icecodenew/alpine:latest AS haproxy-alpine-collection
+FROM quay.io/oopus/alpine:latest AS haproxy-alpine-collection
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 # date +%s
 ARG cachebust=1604512266
