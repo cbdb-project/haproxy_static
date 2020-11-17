@@ -1,4 +1,4 @@
-FROM quay.io/icecodenew/builder_image_x86_64-linux:alpine AS step1_lua54
+FROM quay.io/oopus/builder_image_x86_64-linux:alpine AS step1_lua54
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ## curl -sSL "https://www.lua.org/download.html" | tr -d '\r\n\t' | grep -Po '(?<=lua-)[0-9]\.[0-9]\.[0-9](?=\.tar\.gz)' | sort -Vr | head -n 1
 ARG lua_version='5.4.4'
@@ -34,7 +34,7 @@ RUN curl -fsSL "https://git.haproxy.org/?p=haproxy-${haproxy_branch}.git;a=snaps
     && readelf -p .comment /haproxy \
     && rm -rf -- "$dockerfile_workdir"
 
-FROM quay.io/icecodenew/alpine:latest AS haproxy-alpine-collection
+FROM quay.io/oopus/alpine:latest AS haproxy-alpine-collection
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 COPY --from=haproxy_builder "/haproxy" /
 RUN apk update; apk --no-progress --no-cache add \
