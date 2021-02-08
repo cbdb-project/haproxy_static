@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG lua_version=5.4.0
 WORKDIR /build_root
 RUN source '/root/.bashrc' \
-    && curl -sS "https://www.lua.org/ftp/lua-${lua_version}.tar.gz" | bsdtar --no-xattrs -xf-;
+    && curl -sS "https://www.lua.org/ftp/lua-${lua_version}.tar.gz" | bsdtar -xf-;
 WORKDIR "/build_root/lua-${lua_version}"
 RUN sed -i -E 's!MYCFLAGS=.*!MYCFLAGS='"$CFLAGS"' -fPIE -Wl,-pie!' src/Makefile \
     && make all test \
@@ -19,7 +19,7 @@ ARG jemalloc_latest_commit_hash='f6699803e2772de2a4eb253d5b55f00c3842a950'
 # WORKDIR /build_root
 # RUN source '/root/.bashrc' \
 #     && var_icn_download="https://github.com/jemalloc/jemalloc/releases/download/${jemalloc_latest_tag_name}/jemalloc-${jemalloc_latest_tag_name}.tar.bz2" \
-#     && curl -sS -- "$var_icn_download" | bsdtar --no-xattrs -xf-;
+#     && curl -sS -- "$var_icn_download" | bsdtar -xf-;
 # WORKDIR "/build_root/jemalloc-${jemalloc_latest_tag_name}"
 # RUN ./configure --prefix=/usr --disable-static \
 #     && make -j "$(nproc)" CFLAGS="$CFLAGS -fPIC" \
@@ -40,7 +40,7 @@ ARG haproxy_latest_tag_name='2.4.0'
 WORKDIR /build_root
 RUN source '/root/.bashrc' \
     && mkdir "haproxy-${haproxy_branch}" \
-    && curl -sS "https://git.haproxy.org/?p=haproxy-${haproxy_branch}.git;a=snapshot;h=${haproxy_latest_commit_hash};sf=tgz" | bsdtar --no-xattrs --strip-components 1 -C "haproxy-${haproxy_branch}" -xf-; \
+    && curl -sS "https://git.haproxy.org/?p=haproxy-${haproxy_branch}.git;a=snapshot;h=${haproxy_latest_commit_hash};sf=tgz" | bsdtar --strip-components 1 -C "haproxy-${haproxy_branch}" -xf-; \
     cd "haproxy-${haproxy_branch}" || exit 1 \
     && make clean \
     && make -j "$(nproc)" TARGET=linux-glibc \
