@@ -8,6 +8,8 @@ RUN source '/root/.bashrc' \
 WORKDIR "/build_root/lua-${lua_version}"
 RUN sed -i -E 's!MYCFLAGS=.*!MYCFLAGS='"$CFLAGS"' -fPIE -Wl,-pie!' src/Makefile \
     && make all test \
+    && mkdir -p /usr/local/lib/lua \
+    && mkdir -p /usr/local/share/lua \
     && checkinstall -y --nodoc --pkgversion="$lua_version"
 
 FROM step1_lua54 AS step3_jemalloc
