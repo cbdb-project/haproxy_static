@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG lua_version=5.4.0
 WORKDIR /build_root
 RUN source '/root/.bashrc' \
-    && curl -sS "https://www.lua.org/ftp/lua-${lua_version}.tar.gz" | bsdtar --no-xattrs -xf-;
+    && curl -sS "https://www.lua.org/ftp/lua-${lua_version}.tar.gz" | bsdtar -xf-;
 WORKDIR "/build_root/lua-${lua_version}"
 RUN sed -i -E 's!MYCFLAGS=.*!MYCFLAGS='"$CFLAGS"' -fPIE -Wl,-pie!' src/Makefile \
     && make all test \
@@ -18,7 +18,7 @@ ARG haproxy_latest_commit_hash='6cbbecf09734aeb5fa8bb88f36f06a6f6d35e813'
 WORKDIR /build_root
 RUN source '/root/.bashrc' \
     && mkdir "haproxy-${haproxy_branch}" \
-    && curl -sS "https://git.haproxy.org/?p=haproxy-${haproxy_branch}.git;a=snapshot;h=${haproxy_latest_commit_hash};sf=tgz" | bsdtar --no-xattrs --strip-components 1 -C "haproxy-${haproxy_branch}" -xf-; \
+    && curl -sS "https://git.haproxy.org/?p=haproxy-${haproxy_branch}.git;a=snapshot;h=${haproxy_latest_commit_hash};sf=tgz" | bsdtar --strip-components 1 -C "haproxy-${haproxy_branch}" -xf-; \
     cd "haproxy-${haproxy_branch}" || exit 1 \
     && make clean \
     && make -j "$(nproc)" TARGET=linux-musl \
