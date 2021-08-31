@@ -58,7 +58,7 @@ RUN curl --retry 5 --retry-delay 10 --retry-max-time 60 -fsSL "https://git.hapro
     && sed -E 's/@SBINDIR@/\/usr\/local\/sbin/g' 'admin/systemd/haproxy.service.in' > "/build_root/haproxy.service" \
     && rm -rf -- "$dockerfile_workdir"
 
-FROM quay.io/oopus/debian:oldoldstable-slim AS smoking-test-debian-oldoldstable
+FROM quay.io/oopus/debian:oldstable-slim AS smoking-test-debian-oldstable
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG haproxy_latest_tag_name=2.2.4
 ARG jemalloc_latest_tag_name=5.2.1
